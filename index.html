@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routine compléments</title>
+<meta name="theme-color" content="#d7262e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Routine">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday, calm and practical
+   IDEA a pharmacy blister strip: each dose is a cell you press out when taken
+   PICTURE today's blister, three slots (matin, midi, soir), four pills to pop; below, the 20-day box as a grid
+   COLOUR white ground, Antoniana red #d7262e dominant, magenta #a3196b for the probiotic, ink near-black
+   TYPE Montserrat 800 (like the boxes) + Inter
+   LAYOUT laptop: title + counters on top, blister full width; phone: title, blister stacked by slot, then consignes */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#170b0e);--ink:light-dark(#1d1417,#f6eef0);--soft:light-dark(#6b5a5f,#c2acb2);--line:light-dark(#eadfe1,#3a252b);--red:light-dark(#d7262e,#ff5a5f);--mag:light-dark(#a3196b,#e45aa8);--foil:light-dark(#f4eff0,#24151a);--card:light-dark(#fbf7f8,#1f1115);--band:light-dark(#d7262e,#5a1418);--bandink:#fff}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Montserrat,system-ui,sans-serif;letter-spacing:-.02em;line-height:1.1;margin:0}
+.band{padding:clamp(22px,4vw,48px) max(5vw,16px)}
+.wrap{max-width:1100px;margin:0 auto}
+.top{background:var(--band);color:var(--bandink)}
+.top .wrap{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end;justify-content:space-between}
+h1{font-size:clamp(32px,6vw,48px);font-weight:800;text-wrap:balance}
+.date{margin-top:6px;opacity:.9;text-transform:capitalize}
+.stats{display:flex;gap:28px}
+.stat b{display:block;font:800 clamp(28px,5vw,40px)/1 Montserrat,sans-serif;white-space:nowrap}
+.stat span{font-size:14px;opacity:.9}
+.blister{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:-4px}
+.slot{background:var(--foil);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.slot.now{border-color:var(--red);box-shadow:0 0 0 2px var(--red) inset}
+.slot h2{font-size:20px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.slot h2 small{font:500 13px Inter,sans-serif;color:var(--soft)}
+.tag{font:600 13px Inter,sans-serif;color:var(--red)}
+.pill{appearance:none;font:inherit;color:inherit;text-align:left;cursor:pointer;display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--bg);min-height:76px;transition:transform .15s}
+.pill:hover{border-color:var(--soft)}
+.pill:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.pill:active{transform:scale(.98)}
+.dome{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#fff9 0 18%,transparent 40%),var(--c);box-shadow:inset 0 -6px 0 #0002,0 3px 0 #0001}
+.dome.caps{border-radius:28px;height:34px;align-self:center;background:linear-gradient(90deg,var(--c) 50%,color-mix(in srgb,var(--c) 55%,#fff) 50%)}
+.dome svg{width:26px;height:26px;opacity:0}
+.pill b{display:block;font-weight:600}
+.pill span{display:block;font-size:14px;color:var(--soft)}
+.pill.done{background:var(--foil);border-style:dashed}
+.pill.done .dome{background:transparent;box-shadow:inset 0 0 0 2px var(--c)}
+.pill.done .dome svg{opacity:1;stroke:var(--c)}
+.pill.done b{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--c)}
+.pill.done .when{color:var(--c);font-weight:600}
+.alldone{margin:16px 0 0;font-weight:600;color:var(--red);min-height:1.5em}
+.grid2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px}
+h2.sec{font-size:clamp(24px,3.5vw,30px);font-weight:800;margin-bottom:14px}
+.cure{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px}
+.day{aspect-ratio:1;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;font-size:13px;color:var(--soft);position:relative;overflow:hidden;background:var(--bg)}
+.day i{position:absolute;inset:auto 0 0 0;background:var(--red);opacity:.85}
+.day em{position:relative;font-style:normal}
+.day.full{color:#fff}
+.day.today{outline:2px solid var(--ink);outline-offset:1px}
+.stock{margin-top:16px;display:grid;gap:8px}
+.row{display:grid;grid-template-columns:8.5em minmax(0,1fr) auto;gap:10px;align-items:center;font-size:15px}
+.meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--c)}
+.row .n{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--soft)}
+.buy{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
+.buy.warn{border-color:var(--red);color:var(--red);font-weight:600}
+.rules{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rules li{padding:14px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.rules b{display:block}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{padding:18px;border-radius:16px;border:1px solid var(--line);border-top:6px solid var(--c)}
+.card h3{font-size:19px;font-weight:700;margin-bottom:4px}
+.card .how{color:var(--c);font-weight:600;font-size:15px;margin:0 0 10px}
+.card table{width:100%;border-collapse:collapse;font-size:15px}
+.card td{padding:5px 0;border-bottom:1px solid var(--line)}
+.card td:last-child{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.card p{margin:10px 0 0;font-size:14px;color:var(--soft)}
+.settings{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+label{display:grid;gap:4px;font-size:14px;color:var(--soft)}
+input[type=date]{font:16px Inter,sans-serif;padding:10px 12px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+button.b{font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button.b.p{background:var(--red);border-color:var(--red);color:#fff}
+button.b:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.foot{font-size:13px;color:var(--soft);border-top:1px solid var(--line)}
+@media(max-width:820px){.blister{grid-template-columns:minmax(0,1fr)}.grid2,.cards{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:420px){.cure{grid-template-columns:repeat(5,minmax(0,1fr))}.row{grid-template-columns:7em minmax(0,1fr) auto}}
+@media(prefers-reduced-motion:reduce){.pill{transition:none}}
+</style>
+</head>
+<body>
+<header class="band top">
+  <div class="wrap">
+    <div>
+      <h1>Ma routine compléments</h1>
+      <div class="date" id="today"></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="sDay">J1</b><span>sur 20 jours</span></div>
+      <div class="stat"><b id="sDone">0/4</b><span>pris aujourd'hui</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="band">
+    <div class="wrap">
+      <div class="blister" id="blister"></div>
+      <p class="alldone" id="alldone" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap grid2">
+      <div>
+        <h2 class="sec">La boîte de 20 jours</h2>
+        <div class="cure" id="cure" aria-label="Suivi des 20 jours"></div>
+        <div class="stock" id="stock"></div>
+        <div class="buy" id="buy"></div>
+      </div>
+      <div>
+        <h2 class="sec">À ne pas oublier</h2>
+        <ul class="rules">
+          <li><b>Ne jamais doubler une dose oubliée</b>Oubli ? On reprend simplement à la prise suivante.</li>
+          <li><b>Respecter la dose du jour</b>Le comprimé K2 contient du sorbitol : en excès, effet laxatif.</li>
+          <li><b>Attention aux doublons de vitamine D</b>Vérifier les dosages avant d'ajouter un autre complément qui en contient.</li>
+          <li><b>Anticoagulant ? Avis médical d'abord</b>La vitamine K2 peut interférer avec un traitement par antivitamine K.</li>
+          <li><b>Biofloravit au frigo</b>Entre 4 et 8 °C. Les autres : endroit frais, sec, à l'abri de la lumière, dans leur blister.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap">
+      <h2 class="sec">Fiches produits</h2>
+      <div class="cards">
+        <article class="card" style="--c:var(--mag)">
+          <h3>Biofloravit</h3>
+          <p class="how">Matin · 1 gélule avec un verre d'eau</p>
+          <table>
+            <tr><td>L. rhamnosus IMC 501</td><td>7,5 mld</td></tr>
+            <tr><td>L. paracasei IMC 502</td><td>7,5 mld</td></tr>
+            <tr><td>FOS (prébiotiques)</td><td>150 mg</td></tr>
+            <tr><td>Vitamines B1, B3, B5, B9, B12, H</td><td>100 % VNR</td></tr>
+          </table>
+          <p>Probiotiques + prébiotiques. L'étiquette dit 1 gélule par jour, sans heure imposée. À garder au réfrigérateur.</p>
+        </article>
+        <article class="card" style="--c:var(--red)">
+          <h3>Vitamine K2 bioactive</h3>
+          <p class="how">Matin · 1 comprimé à croquer</p>
+          <table>
+            <tr><td>Vitamine K2 (MK-7)</td><td>200 µg · 265 %</td></tr>
+            <tr><td>Chlorophylle</td><td>5 mg</td></tr>
+            <tr><td>NADH</td><td>1 mg</td></tr>
+          </table>
+          <p>Contribue au maintien d'une ossature normale. Contient du sorbitol et du xylitol.</p>
+        </article>
+        <article class="card" style="--c:var(--red)">
+          <h3>Vitamine D3 bioactive</h3>
+          <p class="how">Midi, pendant le repas · 1 comprimé à croquer</p>
+          <table>
+            <tr><td>Vitamine D3</td><td>2 000 UI (50 µg) · 1000 %</td></tr>
+            <tr><td>OxiP (extraits de plantes)</td><td>5 mg</td></tr>
+          </table>
+          <p>Contribue à réduire la fatigue et au bon fonctionnement musculaire.</p>
+        </article>
+        <article class="card" style="--c:#8c1c22">
+          <h3>Magnésium</h3>
+          <p class="how">Soir, avant de dormir · 1 gélule avec de l'eau</p>
+          <table>
+            <tr><td>Magnésium (oxyde, citrate, pidolate)</td><td>187,5 mg · 50 %</td></tr>
+          </table>
+          <p>Contribue à réduire la fatigue et au bon fonctionnement musculaire.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="padding-top:0">
+    <div class="wrap">
+      <h2 class="sec">Réglages</h2>
+      <div class="settings">
+        <label for="start">Début de la boîte<input type="date" id="start"></label>
+        <button class="b p" id="newBox" type="button">Nouvelle boîte aujourd'hui</button>
+        <button class="b" id="resetDay" type="button">Effacer les prises du jour</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="band foot">
+  <div class="wrap">Infos reprises des étiquettes Farmacia Antoniana (K2 D3 MG Bioattivi et Biofloravit). Les cases cochées restent sur ce téléphone.</div>
+</footer>
+
+<script>
+{
+const P=[
+  {id:'bio',slot:0,name:'Biofloravit',dose:'1 gélule + eau',c:'var(--mag)',caps:true},
+  {id:'k2',slot:0,name:'Vitamine K2',dose:'1 comprimé à croquer',c:'var(--red)'},
+  {id:'d3',slot:1,name:'Vitamine D3',dose:'1 comprimé à croquer',c:'var(--red)'},
+  {id:'mg',slot:2,name:'Magnésium',dose:'1 gélule + eau',c:'#8c1c22',caps:true}
+];
+const S=[{t:'Matin',h:'au réveil'},{t:'Midi',h:'pendant le déjeuner'},{t:'Soir',h:'avant de dormir'}];
+const KEY='routine-complements-v1';
+const pad=n=>String(n).padStart(2,'0');
+const key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const now=new Date();const tk=key(now);
+let st={start:tk,days:{}};
+try{const r=JSON.parse(localStorage.getItem(KEY)||'null');if(r&&r.start&&r.days)st=r}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const check='<svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const curSlot=()=>{const h=now.getHours();return h<11?0:h<16?1:2};
+
+const $=id=>document.getElementById(id);
+$('today').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+function render(){
+  const today=st.days[tk]||{};
+  const cs=curSlot();
+  $('blister').innerHTML=S.map((s,i)=>{
+    const pills=P.filter(p=>p.slot===i).map(p=>{
+      const t=today[p.id];
+      return '<button type="button" class="pill'+(t?' done':'')+'" data-id="'+p.id+'" style="--c:'+p.c+'" aria-pressed="'+(t?'true':'false')+'">'+
+        '<div class="dome'+(p.caps?' caps':'')+'">'+check+'</div>'+
+        '<div><b>'+p.name+'</b><span class="when">'+(t?'Pris à '+t:p.dose)+'</span></div></button>';
+    }).join('');
+    return '<div class="slot'+(i===cs?' now':'')+'"><h2>'+s.t+' <small>'+s.h+'</small></h2>'+(i===cs?'<div class="tag">C’est le moment</div>':'')+pills+'</div>';
+  }).join('');
+  const n=P.filter(p=>today[p.id]).length;
+  $('sDone').textContent=n+'/4';
+  $('alldone').textContent=n===4?'Tout est pris pour aujourd’hui. À demain.':'';
+
+  const start=parse(st.start);
+  const dayN=Math.floor((parse(tk)-start)/864e5)+1;
+  $('sDay').textContent=dayN>=1&&dayN<=20?'J'+dayN:dayN>20?'Fini':'J0';
+  $('start').value=st.start;
+
+  let cells='';
+  for(let i=0;i<20;i++){
+    const d=new Date(start);d.setDate(d.getDate()+i);const k=key(d);
+    const rec=st.days[k]||{};const f=P.filter(p=>rec[p.id]).length/4;
+    cells+='<div class="day'+(k===tk?' today':'')+(f===1?' full':'')+'" title="'+d.toLocaleDateString('fr-FR')+'"><i style="height:'+(f*100)+'%"></i><em>'+(i+1)+'</em></div>';
+  }
+  $('cure').innerHTML=cells;
+
+  const left=P.map(p=>{
+    let used=0;for(const k in st.days){const d=parse(k);if(d>=start&&st.days[k][p.id])used++}
+    return {p,left:Math.max(0,20-used)};
+  });
+  $('stock').innerHTML=left.map(o=>'<div class="row" style="--c:'+o.p.c+'"><span>'+o.p.name+'</span><div class="meter"><i style="width:'+(o.left*5)+'%"></i></div><span class="n">'+o.left+' / 20</span></div>').join('');
+  const min=Math.min(...left.map(o=>o.left));
+  const buy=$('buy');
+  if(min<=3){buy.className='buy warn';buy.textContent=min===0?'Boîte terminée : rachète et clique sur « Nouvelle boîte ».':'Plus que '+min+' jour'+(min>1?'s':'')+' de stock : pense à racheter.';}
+  else{const rest=Math.max(0,17-Math.max(dayN,1));buy.className='buy';buy.textContent='Rachat conseillé vers le jour 17'+(dayN>=1&&rest>0?', dans '+rest+' jour'+(rest>1?'s':'')+'.':'.');}
+}
+
+$('blister').addEventListener('click',e=>{
+  const b=e.target.closest('.pill');if(!b)return;
+  const id=b.dataset.id;const d=st.days[tk]||(st.days[tk]={});
+  if(d[id])delete d[id];else d[id]=pad(new Date().getHours())+'h'+pad(new Date().getMinutes());
+  save();render();
+});
+$('start').addEventListener('change',e=>{if(e.target.value){st.start=e.target.value;save();render()}});
+$('newBox').addEventListener('click',()=>{st.start=tk;save();render()});
+$('resetDay').addEventListener('click',()=>{delete st.days[tk];save();render()});
+render();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&key(new Date())!==tk)location.reload()});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
