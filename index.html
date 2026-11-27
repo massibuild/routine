@@ -77,16 +77,13 @@ h2.sec{font-size:clamp(24px,3.5vw,30px);font-weight:800;margin-bottom:14px}
 .day em{position:relative;font-style:normal}
 .day.full{color:#fff}
 .day.today{outline:2px solid var(--ink);outline-offset:1px}
-.stock{margin-top:16px;display:grid;gap:8px}
+.stock{display:grid;gap:8px}
 .row{display:grid;grid-template-columns:8.5em minmax(0,1fr) auto;gap:10px;align-items:center;font-size:15px}
 .meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
 .meter i{display:block;height:100%;background:var(--c)}
 .row .n{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--soft)}
 .buy{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
 .buy.warn{border-color:var(--red);color:var(--red);font-weight:600}
-.rules{list-style:none;padding:0;margin:0;display:grid;gap:10px}
-.rules li{padding:14px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
-.rules b{display:block}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .card{padding:18px;border-radius:16px;border:1px solid var(--line);border-top:6px solid var(--c)}
 .card h3{font-size:19px;font-weight:700;margin-bottom:4px}
@@ -144,18 +141,11 @@ button.b:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-
         <h2 class="sec">La boîte de 20 jours</h2>
         <div class="cure" id="cure" aria-label="Suivi des 20 jours"></div>
         <p class="hint">Touche un jour passé pour corriger un oubli.</p>
-        <div class="stock" id="stock"></div>
-        <div class="buy" id="buy"></div>
       </div>
       <div>
-        <h2 class="sec">À ne pas oublier</h2>
-        <ul class="rules">
-          <li><b>Ne jamais doubler une dose oubliée</b>Oubli ? On reprend simplement à la prise suivante.</li>
-          <li><b>Respecter la dose du jour</b>Le comprimé K2 contient du sorbitol : en excès, effet laxatif.</li>
-          <li><b>Attention aux doublons de vitamine D</b>Vérifier les dosages avant d'ajouter un autre complément qui en contient.</li>
-          <li><b>Anticoagulant ? Avis médical d'abord</b>La vitamine K2 peut interférer avec un traitement par antivitamine K.</li>
-          <li><b>Biofloravit au frigo</b>Entre 4 et 8 °C. Les autres : endroit frais, sec, à l'abri de la lumière, dans leur blister.</li>
-        </ul>
+        <h2 class="sec">Stock</h2>
+        <div class="stock" id="stock"></div>
+        <div class="buy" id="buy"></div>
       </div>
     </div>
   </section>
